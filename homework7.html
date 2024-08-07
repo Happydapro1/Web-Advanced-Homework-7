@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .data-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .data-title {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="data-box">
+        <div class="data-title">Số ca khỏi:</div>
+        <div id="recovered">Đang tải...</div>
+    </div>
+    <div class="data-box">
+        <div class="data-title">Số ca đang điều trị:</div>
+        <div id="treating">Đang tải...</div>
+    </div>
+    <div class="data-box">
+        <div class="data-title">Số ca tử vong:</div>
+        <div id="deaths">Đang tải...</div>
+    </div>
+
+    <script>
+        const api_url1 = "https://api.apify.com/v2/key-value-stores/ZsOpZgeg7dFS1rgfM/records/LATEST";
+        const api_url2 = "https://api.apify.com/v2/key-value-stores/p3nS2Q9TUn6kUOriJ/records/LATEST";
+
+        async function fetchData() {
+            try {
+                let response1 = await fetch(api_url1);
+                let data1 = await response1.json();
+
+                let response2 = await fetch(api_url2);
+                let data2 = await response2.json();
+
+                // Assuming data from api_url1 has the desired fields
+                document.getElementById('recovered').innerText = data1.recovered;
+                document.getElementById('treating').innerText = data1.treating;
+                document.getElementById('deaths').innerText = data1.deceased;
+
+                // If api_url2 also contains useful information, you can add it here
+                // document.getElementById('someElement').innerText = data2.someField;
+
+                console.log("Success", data1, data2);
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
